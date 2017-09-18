@@ -13,12 +13,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SelectClock extends AppCompatActivity implements View.OnClickListener {
 
-    ImageButton plusAlarmClock;
-    LinearLayout selectClockView;
     SharedPreferences sPref;
-    final String SAVED_TEXT = "saved_text";
+    ImageButton       plusAlarmClock;
+    LinearLayout      selectClockView;
+    Set<String>       buttons = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,14 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         plusAlarmClock = (ImageButton) findViewById(R.id.plusAlarmClock);
         plusAlarmClock.setOnClickListener(this);
         selectClockView = (LinearLayout) findViewById(R.id.viewSelectClock);
+
+        //перед открытием заполним активити кнопками
+        sPref = getPreferences(MODE_PRIVATE);
+        buttons = sPref.getStringSet("saved_text", new HashSet<String>());
+
+        for (String s : buttons) {
+            addViewButton(s);
+        }
     }
 
     //метод определяет какая кнопка была нажата
@@ -49,7 +60,6 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         Intent intent = new Intent(this, AlarmClock.class);
         startActivityForResult(intent, 1);
     }
-
     //метод возвращает данные полученные на виджете с таймпикером
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -58,25 +68,29 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         if (data == null) {
             return;
         }
-        String dateFromTimePicker = data.getStringExtra("name");
 
+        String dateFromTimePicker = data.getStringExtra("name");
+        buttons.add(dateFromTimePicker);
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString(SAVED_TEXT, dateFromTimePicker);
-        //можно засунуть сет
-        ed.putStringSet()
+        ed.putStringSet("saved_text", buttons);
         ed.commit();
+        //перезагружаю активити
+        Intent i = new Intent( this , this.getClass() );
+        finish();
+        this.startActivity(i);
+    }
 
+    private void addViewButton(String dateFromTimePicker) {
         //установили размеры кнопки
         LinearLayout.LayoutParams btnParam
                 = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, 200);
+                ViewGroup.LayoutParams.MATCH_PARENT, 350);
 
         //добавили новую кнопку
         Button newClock = new Button(this);
         newClock.setText(dateFromTimePicker);
         newClock.setTextSize(24);
         selectClockView.addView(newClock, btnParam);
-
     }
 }
