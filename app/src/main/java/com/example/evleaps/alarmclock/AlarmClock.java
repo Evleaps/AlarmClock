@@ -129,7 +129,7 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
         setToastText("Будильник поставлен на " + hour_string + ":" + minute_string);
         //передаем дату на главный экран, сразу изменить разметку отсюда нельзя, ошибка
         Intent intent = new Intent();
-        intent.putExtra("name", hour_string + ":" + minute_string);
+        intent.putExtra(Constant.DATE_FROM_TIMEPICKER, hour_string + ":" + minute_string);
         setResult(RESULT_OK, intent);
         this.finish();
 
