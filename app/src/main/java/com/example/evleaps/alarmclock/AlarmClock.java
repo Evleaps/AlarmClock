@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
@@ -92,20 +91,14 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.alarm_on:
-                startActivity(new Intent(this, SelectClock.class));
                 setAlarm_on();
                 break;
             case R.id.alarm_off:
-                setAlarm_off();
-                startActivity(new Intent(this, SelectClock.class));
+                this.finish();
                 break;
             default:
                 break;
         }
-    }
-
-    //Если нажали кнопку Отмена
-    private void setAlarm_off() {
     }
 
     //если нажали кнопку Сохранить
@@ -133,19 +126,12 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
             } else minute_string = String.valueOf(minute);
         }
 
-
         setToastText("Будильник поставлен на " + hour_string + ":" + minute_string);
-        //установили размеры кнопки
-        LinearLayout.LayoutParams btnParam
-                = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        Button newClock = new Button(this);
-        newClock.setText(hour_string + ":" + minute_string);
-        newClock.setTextSize(24);
-        Intent intent = new Intent(this, SelectClock.class);
-        intent.putExtra("one")
-        selectClockView.addView(newClock, btnParam);
+        //передаем дату на главный экран, сразу изменить разметку отсюда нельзя, ошибка
+        Intent intent = new Intent();
+        intent.putExtra("name", hour_string + ":" + minute_string);
+        setResult(RESULT_OK, intent);
+        this.finish();
 
     }
 
