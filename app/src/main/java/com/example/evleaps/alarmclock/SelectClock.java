@@ -2,20 +2,23 @@ package com.example.evleaps.alarmclock;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
+
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import java.util.HashSet;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.example.evleaps.alarmclock.Constant.DATE_FROM_TIMEPICKER;
 import static com.example.evleaps.alarmclock.Constant.SAVE_DATE_CLOCK;
-import static com.example.evleaps.alarmclock.Constant.SIZE_HEIGHT_BUTTON;
 import static com.example.evleaps.alarmclock.Constant.SIZE_TEXT;
 
 /** Это главное активити, тут по идее кнопки с будильниками, можно включить и
@@ -26,8 +29,10 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
 
     SharedPreferences sPref;
     ImageButton       plusAlarmClock;
-    LinearLayout      selectClockView;
-    Set<String>       buttons = new HashSet<>();
+    RelativeLayout    selectClockView;
+
+    int         btnId   = 0;
+    Set<String> buttons = new LinkedHashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +43,16 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
 
         plusAlarmClock = (ImageButton) findViewById(R.id.plusAlarmClock);
         plusAlarmClock.setOnClickListener(this);
-        selectClockView = (LinearLayout) findViewById(R.id.viewSelectClock);
+        selectClockView = (RelativeLayout) findViewById(R.id.viewSelectClock);
 
         //перед открытием заполним активити кнопками
         sPref = getPreferences(MODE_PRIVATE);
-        buttons = sPref.getStringSet(SAVE_DATE_CLOCK, new HashSet<String>());
+        buttons = sPref.getStringSet(SAVE_DATE_CLOCK, new LinkedHashSet<String>());
 
         for (String s : buttons) {
             addViewButton(s);
         }
+        Toast.makeText(SelectClock.this, "Будильников всего: "+buttons.size(), Toast.LENGTH_LONG).show();
     }
 
     //метод определяет какая кнопка была нажата
@@ -77,6 +83,7 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
 
         String dateFromTimePicker = data.getStringExtra(DATE_FROM_TIMEPICKER);
         buttons.add(dateFromTimePicker);
+
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putStringSet(SAVE_DATE_CLOCK, buttons);
@@ -89,14 +96,35 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
 
     private void addViewButton(String dateFromTimePicker) {
         //установили размеры кнопки
-        LinearLayout.LayoutParams btnParam
-                = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, SIZE_HEIGHT_BUTTON);
+        RelativeLayout.LayoutParams btnParam
+                = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT, Constant.SIZE_HEIGHT_BUTTON);
+        if (btnId != 0)
+            btnParam.addRule(RelativeLayout.BELOW, btnId-1);
 
         //добавили новую кнопку
         Button newClock = new Button(this);
         newClock.setText(dateFromTimePicker);
         newClock.setTextSize(SIZE_TEXT);
+        newClock.setBackgroundColor(Color.GREEN);
+        newClock.setId(btnId);
+
+        //установили размеры кнопки on\off
+        RelativeLayout.LayoutParams btnParamOnOff
+                = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        btnParamOnOff.addRule(RelativeLayout.ALIGN_RIGHT, btnId);
+        btnParamOnOff.addRule(RelativeLayout.BELOW, btnId-1);
+        btnParamOnOff.setMargins(0,75,75,0);//отступы
+
+
+
+        Button newClockOnOff = new Button(this);
+        newClockOnOff.setBackgroundColor(Color.RED);
+
         selectClockView.addView(newClock, btnParam);
+        selectClockView.addView(newClockOnOff, btnParamOnOff);
+        btnId++;
     }
 }

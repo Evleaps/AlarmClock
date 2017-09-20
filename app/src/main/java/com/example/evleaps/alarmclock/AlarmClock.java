@@ -19,14 +19,14 @@ import java.util.Calendar;
 
 public class AlarmClock extends AppCompatActivity implements View.OnClickListener {
 
-    Button alarm_on, alarm_off;
-    TimePicker timePicker;
-    AlarmManager alarmManager;
+    Button        alarm_on, alarm_off;
+    TimePicker    timePicker;
+    AlarmManager  alarmManager;
     PendingIntent pendingIntent;
-    LinearLayout selectClockView;
-    int hour, minute;
-    Calendar calendar;
-    Intent intent;
+    LinearLayout  selectClockView;
+    int           hour, minute;
+    Calendar      calendar;
+    Intent        intent;
 
 
     @Override
@@ -38,13 +38,13 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
 
         //объявили виджеты, что-бы удобно было к ним обращаться
         selectClockView = (LinearLayout) findViewById(R.id.viewSelectClock);
-        alarm_on = (Button) findViewById(R.id.alarm_on);
-        alarm_off = (Button) findViewById(R.id.alarm_off);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        timePicker = (TimePicker) findViewById(R.id.timePicker);
+        alarm_on        = (Button) findViewById(R.id.alarm_on);
+        alarm_off       = (Button) findViewById(R.id.alarm_off);
+        alarmManager    = (AlarmManager) getSystemService(ALARM_SERVICE);
+        timePicker      = (TimePicker) findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
-        intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        calendar = Calendar.getInstance();
+        intent          = new Intent(getApplicationContext(), AlarmReceiver.class);
+        calendar        = Calendar.getInstance();
 
         alarm_on.setOnClickListener(this);
         alarm_off.setOnClickListener(this);
