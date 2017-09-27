@@ -1,5 +1,6 @@
 package com.example.evleaps.alarmclock;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
     ImageButton       offOn6;    TextView time6;   TextView other6;  Button btn6;
 
     ImageButton       plusAlarmClock;
+    AlarmManager      alarmManager;
     SharedPreferences sPref;
     Set<String>       buttons = new LinkedHashSet<>();
 
@@ -46,6 +48,7 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
 
         plusAlarmClock = (ImageButton) findViewById(R.id.plusAlarmClock);
         plusAlarmClock.setOnClickListener(this);
+        alarmManager   = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         ArrayList<ImageButton> offOn = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
         ArrayList<TextView> time  = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
@@ -159,7 +162,13 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private void onAlarmClock() {
+    private void onOffAlarmClock(Boolean offOrOn) {
+        if (offOrOn == true) {
+
+        } else {
+            Intent intent = new Intent();
+            //alarmManager.cancel();
+        }
 
     }
 

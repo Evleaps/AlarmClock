@@ -5,4 +5,5 @@
     <string name="action_author">Author</string>
     <string name="title_activity_select_clock">Select clock</string>
     <string name="select_clock">Выбор будильника</string>
+    <string name="title_activity_close_alarm_clock">CloseAlarmClock</string>
 </resources>

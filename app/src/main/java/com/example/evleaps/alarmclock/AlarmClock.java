@@ -103,14 +103,17 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
 
     //если нажали кнопку Сохранить
     private void setAlarm_on() {
-        calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
-        calendar.set(Calendar.MINUTE, timePicker.getMinute());
-
         hour = timePicker.getHour();
         minute = timePicker.getMinute();
 
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        setToastText(calendar.getTimeInMillis()+"");
+
         pendingIntent = PendingIntent.getBroadcast(AlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
 
         String hour_string;
         String minute_string;
