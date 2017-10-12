@@ -10,4 +10,5 @@ public class Constant {
     protected static final int    SIZE_HEIGHT_BUTTON = 350;
     protected static final int    SIZE_TEXT = 24;
     protected static final int    COUNT_ELEMENT_VIEW = 6;
+    protected static       int    TIME_TO_SLEEP = 60000; //n minutes
 }

@@ -19,15 +19,14 @@ import java.util.Calendar;
 
 public class AlarmClock extends AppCompatActivity implements View.OnClickListener {
 
-    Button        alarm_on, alarm_off;
-    TimePicker    timePicker;
-    AlarmManager  alarmManager;
-    PendingIntent pendingIntent;
-    LinearLayout  selectClockView;
-    int           hour, minute;
-    Calendar      calendar;
-    Intent        intent;
-
+    private Button alarm_on, alarm_off;
+    private TimePicker timePicker;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private LinearLayout selectClockView;
+    private int hour, minute;
+    private Calendar calendar;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +37,18 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
 
         //объявили виджеты, что-бы удобно было к ним обращаться
         selectClockView = (LinearLayout) findViewById(R.id.viewSelectClock);
-        alarm_on        = (Button) findViewById(R.id.alarm_on);
-        alarm_off       = (Button) findViewById(R.id.alarm_off);
-        alarmManager    = (AlarmManager) getSystemService(ALARM_SERVICE);
-        timePicker      = (TimePicker) findViewById(R.id.timePicker);
+        alarm_on = (Button) findViewById(R.id.alarm_on);
+        alarm_off = (Button) findViewById(R.id.alarm_off);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        timePicker = (TimePicker) findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
-        intent          = new Intent(getApplicationContext(), AlarmReceiver.class);
-        calendar        = Calendar.getInstance();
 
         alarm_on.setOnClickListener(this);
         alarm_off.setOnClickListener(this);
+
+
+        intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        calendar = Calendar.getInstance();
     }
 
     @Override
@@ -101,6 +102,7 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+
     //если нажали кнопку Сохранить
     private void setAlarm_on() {
         hour = timePicker.getHour();
@@ -109,11 +111,8 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
 
-        setToastText(calendar.getTimeInMillis()+"");
-
-        pendingIntent = PendingIntent.getBroadcast(AlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
+        setToastText(calendar.getTimeInMillis() + "");
+        setAlarmTime(calendar, false);//если тру, значит мы откладываем будильник на Constant.TIME_TO_SLEEP
 
         String hour_string;
         String minute_string;
@@ -142,5 +141,13 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
     private void setToastText(String stateAlarm) {
         Toast toast = Toast.makeText(AlarmClock.this, stateAlarm, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    public void setAlarmTime(Calendar calendar, boolean thisIsDream ) {
+        pendingIntent = PendingIntent.getBroadcast(AlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                thisIsDream==true? calendar.getTimeInMillis() + Constant.TIME_TO_SLEEP
+                :calendar.getTimeInMillis(),
+                pendingIntent);
     }
 }
