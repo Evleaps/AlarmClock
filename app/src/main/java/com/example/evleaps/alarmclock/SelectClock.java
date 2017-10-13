@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -83,7 +84,6 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         btn5 = (Button) findViewById(R.id.btn5); btn.add(btn5);
         btn6 = (Button) findViewById(R.id.btn6); btn.add(btn6);
 
-
         //перед открытием заполним активити кнопками
         sPref = getPreferences(MODE_PRIVATE);
         buttons = sPref.getStringSet(SAVE_DATE_CLOCK, new LinkedHashSet<String>());
@@ -104,6 +104,8 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
                 createAlarmClock();
                 break;
             case R.id.offOnn1:
+                break;
+            case R.id.btn1|R.id.btn2|R.id.btn3|R.id.btn4|R.id.btn5|R.id.btn6:
 
             default:
                 break;
@@ -130,9 +132,10 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putStringSet(SAVE_DATE_CLOCK, buttons);
+        ed.clear();
         ed.commit();
         //перезагружаю активити
-        Intent i = new Intent( this , this.getClass() );
+        Intent i = new Intent( this, this.getClass() );
         finish();
         this.startActivity(i);
     }
