@@ -10,17 +10,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.Calendar;
-import java.util.Date;
+
 
 public class CloseAlarmClock extends AppCompatActivity implements View.OnClickListener {
 
-    Button       sleep;
-    Button       close;
-    TextView     dateNow;
-    MediaPlayer  mediaPlayer;
-    Calendar     calendar;
+    private Button        sleep, close;
+    private TextView      dateNow;
+    private MediaPlayer   mediaPlayer;
+    private Calendar      calendar;
+    private AlarmManager  alarmManager;
+    private PendingIntent pendingIntent;
+    private Intent        intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,26 +32,36 @@ public class CloseAlarmClock extends AppCompatActivity implements View.OnClickLi
 
         //запуск сигнала
         mediaPlayer = MediaPlayer.create(this, R.raw.boom_boom);
-        mediaPlayer.start();
+       // mediaPlayer.start();
 
         sleep   = (Button) findViewById(R.id.sleep_btn);
         close   = (Button) findViewById(R.id.close_btn);
         dateNow = (TextView) findViewById(R.id.date_now);
+
+        sleep.setOnClickListener(this);
+        close.setOnClickListener(this);
+        dateNow.setOnClickListener(this);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        calendar = Calendar.getInstance();
     }
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.close_btn:
-                mediaPlayer.stop();
+           //     mediaPlayer.stop();
+                this.finish();
                 break;
             case R.id.sleep_btn:
-                mediaPlayer.stop();
-                calendar = Calendar.getInstance();
-                calendar.set(Calendar.MINUTE, (int) (new Date().getTime() + Constant.TIME_TO_SLEEP));
-                new AlarmClock().setAlarmTime(calendar, true);
-
+          //      mediaPlayer.stop();
+                pendingIntent = PendingIntent.getBroadcast(CloseAlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + Constant.TIME_TO_SLEEP, pendingIntent);
+                this.finish();
+                break;
+            default:
+                break;
         }
     }
 }
