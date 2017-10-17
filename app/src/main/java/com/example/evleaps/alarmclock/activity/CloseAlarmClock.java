@@ -1,4 +1,4 @@
-package com.example.evleaps.alarmclock;
+package com.example.evleaps.alarmclock.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -10,6 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.evleaps.alarmclock.controller.AlarmReceiver;
+import com.example.evleaps.alarmclock.controller.Constant;
+import com.example.evleaps.alarmclock.R;
+
 import java.util.Calendar;
 
 

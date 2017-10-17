@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SelectClock"
+            android:name=".activity.SelectClock"
             android:label="@string/title_activity_select_clock"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,14 +22,14 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".controller.AlarmReceiver" />
 
         <activity
-            android:name=".AlarmClock"
+            android:name=".activity.CreateAlarmClock"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".CloseAlarmClock"
+            android:name=".activity.CloseAlarmClock"
             android:label="@string/title_activity_close_alarm_clock"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

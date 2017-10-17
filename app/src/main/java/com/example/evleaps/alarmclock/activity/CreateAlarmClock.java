@@ -1,8 +1,9 @@
-package com.example.evleaps.alarmclock;
+package com.example.evleaps.alarmclock.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +12,20 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.evleaps.alarmclock.controller.AlarmReceiver;
+import com.example.evleaps.alarmclock.controller.Constant;
+import com.example.evleaps.alarmclock.R;
+import com.example.evleaps.alarmclock.controller.LoadUnloadObj;
+import com.example.evleaps.alarmclock.model.Alarm;
+
 import java.util.Calendar;
 
-public class AlarmClock extends AppCompatActivity implements View.OnClickListener {
+import static com.example.evleaps.alarmclock.controller.Constant.SAVE_DATE_CLOCK;
+
+public class CreateAlarmClock extends AppCompatActivity implements View.OnClickListener {
 
     private Button alarm_on, alarm_off;
     private TimePicker timePicker;
@@ -27,6 +35,8 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
     private int hour, minute;
     private Calendar calendar;
     private Intent intent;
+    private Alarm alarmClock = new Alarm();
+    private SharedPreferences sPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +77,15 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-                Toast.makeText(AlarmClock.this, "Ты тыкнул в настройки", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateAlarmClock.this, "Ты тыкнул в настройки", Toast.LENGTH_LONG).show();
                 break;
             case R.id.action_author:
-                Toast.makeText(AlarmClock.this, "Автор: Аймалетдинов Р.А.", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateAlarmClock.this, "Автор: Аймалетдинов Р.А.", Toast.LENGTH_LONG).show();
                 break;
             case R.id.action_version:
                 try {
                     String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-                    Toast.makeText(AlarmClock.this, "Версия: " + versionName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateAlarmClock.this, "Версия: " + versionName, Toast.LENGTH_LONG).show();
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -108,6 +118,31 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
 
+        String time = refactorTime();
+        setToastText("Будильник поставлен на " + time);
+
+
+        alarmClock.setCalendar(calendar);
+        alarmClock.setContext(this);
+        alarmClock.setTime(time);
+        new LoadUnloadObj(this).load(alarmClock);
+
+
+        pendingIntent = PendingIntent.getBroadcast(CreateAlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        //передаем дату на главный экран, сразу изменить разметку отсюда нельзя, ошибка
+        Intent intent = new Intent();
+        intent.putExtra(Constant.DATE_FROM_TIMEPICKER, time);
+        setResult(RESULT_OK, intent);
+        this.finish();
+    }
+    //вылезает 3.5 секундное сообщение поверх экрана
+    private void setToastText(String stateAlarm) {
+        Toast toast = Toast.makeText(CreateAlarmClock.this, stateAlarm, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    private String refactorTime() {
         String hour_string;
         String minute_string;
         if (hour < 10) {
@@ -122,19 +157,6 @@ public class AlarmClock extends AppCompatActivity implements View.OnClickListene
             } else minute_string = String.valueOf(minute);
         }
 
-        setToastText("Будильник поставлен на " + hour_string + ":" + minute_string);
-        pendingIntent = PendingIntent.getBroadcast(AlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        //передаем дату на главный экран, сразу изменить разметку отсюда нельзя, ошибка
-        Intent intent = new Intent();
-        intent.putExtra(Constant.DATE_FROM_TIMEPICKER, hour_string + ":" + minute_string);
-        setResult(RESULT_OK, intent);
-        this.finish();
-
-    }
-    //вылезает 3.5 секундное сообщение поверх экрана
-    private void setToastText(String stateAlarm) {
-        Toast toast = Toast.makeText(AlarmClock.this, stateAlarm, Toast.LENGTH_LONG);
-        toast.show();
+        return hour_string + ":" + minute_string;
     }
 }

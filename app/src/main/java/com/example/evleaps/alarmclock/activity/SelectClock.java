@@ -1,4 +1,4 @@
-package com.example.evleaps.alarmclock;
+package com.example.evleaps.alarmclock.activity;
 
 import android.app.AlarmManager;
 import android.content.Intent;
@@ -11,14 +11,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.evleaps.alarmclock.controller.Constant;
+import com.example.evleaps.alarmclock.R;
+import com.example.evleaps.alarmclock.controller.LoadUnloadObj;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.example.evleaps.alarmclock.Constant.DATE_FROM_TIMEPICKER;
-import static com.example.evleaps.alarmclock.Constant.SAVE_DATE_CLOCK;
+import static com.example.evleaps.alarmclock.controller.Constant.DATE_FROM_TIMEPICKER;
+import static com.example.evleaps.alarmclock.controller.Constant.SAVE_DATE_CLOCK;
 
 
 /** Это главное активити, тут по идее кнопки с будильниками, можно включить и
@@ -26,14 +29,12 @@ import static com.example.evleaps.alarmclock.Constant.SAVE_DATE_CLOCK;
  * {@Author Aymaletdinov R}*/
 
 public class SelectClock extends AppCompatActivity implements View.OnClickListener {
-
-
-    ImageButton       offOn1;    TextView time1;   TextView other1;  Button btn1;
-    ImageButton       offOn2;    TextView time2;   TextView other2;  Button btn2;
-    ImageButton       offOn3;    TextView time3;   TextView other3;  Button btn3;
-    ImageButton       offOn4;    TextView time4;   TextView other4;  Button btn4;
-    ImageButton       offOn5;    TextView time5;   TextView other5;  Button btn5;
-    ImageButton       offOn6;    TextView time6;   TextView other6;  Button btn6;
+    ImageButton       offOn1;   TextView time1;   TextView other1;  Button btn1;
+    ImageButton       offOn2;   TextView time2;   TextView other2;  Button btn2;
+    ImageButton       offOn3;   TextView time3;   TextView other3;  Button btn3;
+    ImageButton       offOn4;   TextView time4;   TextView other4;  Button btn4;
+    ImageButton       offOn5;   TextView time5;   TextView other5;  Button btn5;
+    ImageButton       offOn6;   TextView time6;   TextView other6;  Button btn6;
 
     ImageButton       plusAlarmClock;
     AlarmManager      alarmManager;
@@ -105,8 +106,8 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.offOnn1:
                 break;
-            case R.id.btn1|R.id.btn2|R.id.btn3|R.id.btn4|R.id.btn5|R.id.btn6:
-
+            case R.id.btn1:
+                removeAlarmClock(btn1,other1, time1, offOn1);
             default:
                 break;
         }
@@ -114,7 +115,7 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
 
     //тут мы идем на экран таймпикера, возвращаемся и добавляем новый виджкт кнопку будильника
     private void createAlarmClock() {
-        Intent intent = new Intent(this, AlarmClock.class);
+        Intent intent = new Intent(this, CreateAlarmClock.class);
         startActivityForResult(intent, 1);
     }
     //метод возвращает данные полученные на виджете с таймпикером
@@ -129,11 +130,7 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         String dateFromTimePicker = data.getStringExtra(DATE_FROM_TIMEPICKER);
         buttons.add(dateFromTimePicker);
 
-        sPref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putStringSet(SAVE_DATE_CLOCK, buttons);
-        ed.clear();
-        ed.commit();
+        new LoadUnloadObj(this);
         //перезагружаю активити
         Intent i = new Intent( this, this.getClass() );
         finish();
@@ -172,7 +169,5 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
             Intent intent = new Intent();
             //alarmManager.cancel();
         }
-
     }
-
 }
