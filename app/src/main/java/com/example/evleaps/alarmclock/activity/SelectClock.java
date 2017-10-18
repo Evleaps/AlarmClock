@@ -1,19 +1,27 @@
 package com.example.evleaps.alarmclock.activity;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.evleaps.alarmclock.controller.AlarmReceiver;
 import com.example.evleaps.alarmclock.controller.Constant;
 import com.example.evleaps.alarmclock.R;
 import com.example.evleaps.alarmclock.controller.LoadUnloadObj;
+import com.example.evleaps.alarmclock.model.Alarm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,6 +30,7 @@ import java.util.Set;
 
 import static com.example.evleaps.alarmclock.controller.Constant.DATE_FROM_TIMEPICKER;
 import static com.example.evleaps.alarmclock.controller.Constant.SAVE_DATE_CLOCK;
+import static com.example.evleaps.alarmclock.controller.Constant.setAlarm;
 
 
 /** Это главное активити, тут по идее кнопки с будильниками, можно включить и
@@ -37,9 +46,64 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
     ImageButton       offOn6;   TextView time6;   TextView other6;  Button btn6;
 
     ImageButton       plusAlarmClock;
+    Animation         animation = null;
     AlarmManager      alarmManager;
-    SharedPreferences sPref;
-    Set<String>       buttons = new LinkedHashSet<>();
+    Set<Alarm>        buttons = new LinkedHashSet<>();
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        switch (v.getId()) {
+            case R.id.btn1:
+                menu.add(0,1,0,"Удалить");
+                break;
+            case R.id.btn2:
+                menu.add(0,2,0,"Удалить");
+                break;
+            case R.id.btn3:
+                menu.add(0,3,0,"Удалить");
+                break;
+            case R.id.btn4:
+                menu.add(0,4,0,"Удалить");
+                break;
+            case R.id.btn5:
+                menu.add(0,5,0,"Удалить");
+                break;
+            case R.id.btn6:
+                menu.add(0,6,0,"Удалить");
+                break;
+            default:
+                break;
+
+        }
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case 1:
+                removeAlarmClock(btn1, other1, time1, offOn1);
+                break;
+            case 2:
+                removeAlarmClock(btn2, other2, time2, offOn2);
+                break;
+            case 3:
+                removeAlarmClock(btn3, other3, time3, offOn3);
+                break;
+            case 4:
+                removeAlarmClock(btn4, other4, time4, offOn4);
+                break;
+            case 5:
+                removeAlarmClock(btn5, other5, time5, offOn5);
+                break;
+            case 6:
+                removeAlarmClock(btn6, other6, time6, offOn6);
+                break;
+            default:
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +117,9 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         alarmManager   = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         ArrayList<ImageButton> offOn = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
-        ArrayList<TextView> time  = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
-        ArrayList<TextView> other = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
-        ArrayList<Button> btn   = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
+        ArrayList<TextView>    time  = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
+        ArrayList<TextView>    other = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
+        ArrayList<Button>      btn   = new ArrayList<>(Constant.COUNT_ELEMENT_VIEW);
 
         offOn1 = (ImageButton) findViewById(R.id.offOnn1); offOn.add(offOn1);
         offOn2 = (ImageButton) findViewById(R.id.offOnn2); offOn.add(offOn2);
@@ -85,14 +149,30 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         btn5 = (Button) findViewById(R.id.btn5); btn.add(btn5);
         btn6 = (Button) findViewById(R.id.btn6); btn.add(btn6);
 
-        //перед открытием заполним активити кнопками
-        sPref = getPreferences(MODE_PRIVATE);
-        buttons = sPref.getStringSet(SAVE_DATE_CLOCK, new LinkedHashSet<String>());
+        btn1.setOnClickListener(this);    offOn1.setOnClickListener(this);
+        btn2.setOnClickListener(this);    offOn2.setOnClickListener(this);
+        btn3.setOnClickListener(this);    offOn3.setOnClickListener(this);
+        btn4.setOnClickListener(this);    offOn4.setOnClickListener(this);
+        btn5.setOnClickListener(this);    offOn5.setOnClickListener(this);
+        btn6.setOnClickListener(this);    offOn6.setOnClickListener(this);
 
-        addAlarmClock(null, null, null, plusAlarmClock, null);
+        //контекстное меню
+        registerForContextMenu(btn1);
+        registerForContextMenu(btn2);
+        registerForContextMenu(btn3);
+        registerForContextMenu(btn4);
+        registerForContextMenu(btn5);
+        registerForContextMenu(btn6);
+
+        //перед открытием заполним активити кнопками
+        buttons = new LoadUnloadObj(this).unload();
+
+        addAlarmClock(null, null, null, plusAlarmClock, null);//это кнопка + (добавление буд)
         Iterator iterator = buttons.iterator();
         for (int i = 0; i < buttons.size(); i++) {
-            addAlarmClock(btn.get(i), other.get(i), time.get(i), offOn.get(i), iterator.next().toString());
+            Alarm alarm = (Alarm) iterator.next();
+            addAlarmClock(btn.get(i), other.get(i), time.get(i), offOn.get(i), alarm.getTime());
+            //если у нас уже 6 будильников, кнопка + пропадает
             if (buttons.size()>=6) removeAlarmClock(null, null, null, plusAlarmClock);
         }
     }
@@ -102,12 +182,20 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.plusAlarmClock:
+                animation = AnimationUtils.loadAnimation(this, R.anim.anim );
+                plusAlarmClock.startAnimation(animation);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 createAlarmClock();
                 break;
             case R.id.offOnn1:
                 break;
             case R.id.btn1:
-                removeAlarmClock(btn1,other1, time1, offOn1);
+
+                break;
             default:
                 break;
         }
@@ -116,25 +204,8 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
     //тут мы идем на экран таймпикера, возвращаемся и добавляем новый виджкт кнопку будильника
     private void createAlarmClock() {
         Intent intent = new Intent(this, CreateAlarmClock.class);
-        startActivityForResult(intent, 1);
-    }
-    //метод возвращает данные полученные на виджете с таймпикером
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (data == null) {
-            return;
-        }
-
-        String dateFromTimePicker = data.getStringExtra(DATE_FROM_TIMEPICKER);
-        buttons.add(dateFromTimePicker);
-
-        new LoadUnloadObj(this);
-        //перезагружаю активити
-        Intent i = new Intent( this, this.getClass() );
         finish();
-        this.startActivity(i);
+        startActivity(intent);
     }
 
     private void addAlarmClock(Button btn, TextView other, TextView time,
@@ -160,6 +231,7 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
         }catch (NullPointerException e) {
             offOn.setVisibility(View.INVISIBLE);
         }
+        removeAlarmManager(time.getText().toString());
     }
 
     private void onOffAlarmClock(Boolean offOrOn) {
@@ -169,5 +241,26 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
             Intent intent = new Intent();
             //alarmManager.cancel();
         }
+    }
+
+    private void removeAlarmManager(String time) {
+        //Удаляет саму сигнализацию
+        LoadUnloadObj save = new LoadUnloadObj(this);
+        int id = 0;
+        for (Alarm a : buttons) {
+            setAlarm.clear();
+
+            if (a.getTime() == time) {
+               id = a.getID();
+                break;
+            } else {
+                save.load(a);
+            }
+        }
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        PendingIntent pIntent = PendingIntent.getBroadcast(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pIntent);
+
+
     }
 }
