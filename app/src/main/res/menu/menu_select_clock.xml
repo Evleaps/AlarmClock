@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.evleaps.alarmclock.activity.mainActivity.CreateAlarmClock">
+    tools:context="com.example.evleaps.alarmclock.activity.mainActivity.SelectClock">
     <!--showAsAction дает разрешение на использование иконок:
     ifRoom - значек будет виден если есть место
     always - всегда
@@ -14,13 +14,8 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_version"
+        android:id="@+id/hashish"
         android:orderInCategory="100"
-        android:title="@string/action_version"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_author"
-        android:orderInCategory="100"
-        android:title="@string/action_author"
+        android:title="@string/hashish"
         app:showAsAction="never" />
 </menu>

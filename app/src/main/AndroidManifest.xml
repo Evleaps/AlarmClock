@@ -4,6 +4,11 @@
     android:versionCode="1"
     android:versionName="1.0">
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_alarm_clock"
@@ -12,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.SelectClock"
+            android:name=".activity.mainActivity.SelectClock"
             android:label="@string/title_activity_select_clock"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,12 +30,30 @@
         <receiver android:name=".controller.AlarmReceiver" />
 
         <activity
-            android:name=".activity.CreateAlarmClock"
+            android:name=".activity.mainActivity.CreateAlarmClock"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.CloseAlarmClock"
+            android:name=".activity.mainActivity.CloseAlarmClock"
             android:label="@string/title_activity_close_alarm_clock"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.settings.Hashish"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.settings.SettingsAlarm"
+            android:label="@string/title_activity_settings_alarm" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".activity.settings.Registration"
+            android:label="@string/title_activity_registration"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.settings.PersonalAccount"
+            android:label="@string/title_activity_personal_account"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

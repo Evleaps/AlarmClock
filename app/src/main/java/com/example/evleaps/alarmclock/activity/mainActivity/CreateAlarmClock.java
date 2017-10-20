@@ -1,4 +1,4 @@
-package com.example.evleaps.alarmclock.activity;
+package com.example.evleaps.alarmclock.activity.mainActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.evleaps.alarmclock.activity.settings.Hashish;
 import com.example.evleaps.alarmclock.controller.AlarmReceiver;
 import com.example.evleaps.alarmclock.R;
 import com.example.evleaps.alarmclock.controller.LoadUnloadObj;
@@ -69,7 +71,7 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-                Toast.makeText(CreateAlarmClock.this, "Ты тыкнул в настройки", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, Hashish.class));
                 break;
             case R.id.action_author:
                 Toast.makeText(CreateAlarmClock.this, "Автор: Аймалетдинов Р.А.", Toast.LENGTH_LONG).show();

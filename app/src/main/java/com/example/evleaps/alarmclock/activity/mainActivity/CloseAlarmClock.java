@@ -1,4 +1,4 @@
-package com.example.evleaps.alarmclock.activity;
+package com.example.evleaps.alarmclock.activity.mainActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;

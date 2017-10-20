@@ -1,7 +1,6 @@
 package com.example.evleaps.alarmclock.controller;
 
-import com.example.evleaps.alarmclock.activity.SelectClock;
-import com.example.evleaps.alarmclock.model.Alarm;
+import com.example.evleaps.alarmclock.activity.mainActivity.SelectClock;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -20,4 +19,8 @@ public class Constant {
     public static final String DATE_FROM_TIMEPICKER = "date_timePicker";
     public static final int    COUNT_ELEMENT_VIEW = 6;
     public static       int    TIME_TO_SLEEP = 60000; //n minutes
+
+    public static final int    DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "contactDb";
+    public static final String DATABASE_TABLE_CONTACTS = "contact";
 }

@@ -1,13 +1,13 @@
-package com.example.evleaps.alarmclock.activity;
+package com.example.evleaps.alarmclock.activity.mainActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.evleaps.alarmclock.activity.settings.Hashish;
 import com.example.evleaps.alarmclock.controller.AlarmReceiver;
 import com.example.evleaps.alarmclock.controller.Constant;
 import com.example.evleaps.alarmclock.R;
@@ -28,8 +29,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.example.evleaps.alarmclock.controller.Constant.DATE_FROM_TIMEPICKER;
-import static com.example.evleaps.alarmclock.controller.Constant.SAVE_DATE_CLOCK;
 import static com.example.evleaps.alarmclock.controller.Constant.setAlarm;
 
 
@@ -49,6 +48,28 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
     Animation         animation = null;
     AlarmManager      alarmManager;
     Set<Alarm>        buttons = new LinkedHashSet<>();
+
+    /**Настроки в статус баре, ПЛЮШКИ включают в себя не важную для будильника функциональность
+     * а Settings напрямую регулирует работу будильника*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_select_clock, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.hashish:
+                startActivity(new Intent(this, Hashish.class));
+                break;
+            case R.id.action_settings:
+                Toast.makeText(this, "Нету", Toast.LENGTH_SHORT).show();
+               // startActivity(new Intent(this, null));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -184,11 +205,6 @@ public class SelectClock extends AppCompatActivity implements View.OnClickListen
             case R.id.plusAlarmClock:
                 animation = AnimationUtils.loadAnimation(this, R.anim.anim );
                 plusAlarmClock.startAnimation(animation);
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 createAlarmClock();
                 break;
             case R.id.offOnn1:

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.evleaps.alarmclock.activity.mainActivity.CloseAlarmClock"
-    tools:showIn="@layout/activity_close_alarm_clock">
+    tools:context="com.example.evleaps.alarmclock.activity.settings.Hashish"
+    tools:showIn="@layout/activity_hashish">
 
 </android.support.constraint.ConstraintLayout>

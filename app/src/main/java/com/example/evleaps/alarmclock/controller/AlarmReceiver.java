@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.evleaps.alarmclock.activity.CloseAlarmClock;
+import com.example.evleaps.alarmclock.activity.mainActivity.CloseAlarmClock;
 
 /**
  * Created by evleaps on 14.09.17.
