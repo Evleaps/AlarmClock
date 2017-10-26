@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,245 +16,26 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:layout_above="@+id/plusAlarmClock">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewSelectClock"
             android:orientation="vertical"
             android:layout_above="@+id/plusAlarmClock">
-
-            <Button
-                android:id="@+id/btn1"
+            <ListView
+                android:id="@+id/list_view_select_clock"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:visibility="invisible"/>
-            <ImageButton
-                android:id="@+id/offOnn1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/icon_alarm_clock"
-                android:background="@null"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="10dp"
-                android:layout_above="@+id/btn2"
-                android:layout_alignParentEnd="true"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/other1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/time1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:textSize="24dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-
-            <Button
-                android:id="@+id/btn2"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:layout_below="@+id/btn1"
-                android:visibility="invisible"/>
-            <ImageButton
-                android:id="@+id/offOnn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/icon_alarm_clock"
-                android:background="@null"
-                android:layout_below="@+id/btn1"
-                android:layout_alignStart="@+id/offOnn1"
-                android:layout_marginTop="11dp"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/other2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn2"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/time2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn2"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:textSize="24dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-
-            <Button
-                android:id="@+id/btn3"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:layout_below="@+id/btn2"
-                android:visibility="invisible"/>
-            <ImageButton
-                android:id="@+id/offOnn3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/icon_alarm_clock"
-                android:background="@null"
-                android:layout_below="@+id/btn2"
-                android:layout_alignStart="@+id/offOnn2"
-                android:layout_marginTop="11dp"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/other3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn3"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/time3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn3"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:textSize="24dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-
-            <Button
-                android:id="@+id/btn4"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:layout_below="@+id/btn3"
-                android:visibility="invisible"/>
-            <ImageButton
-                android:id="@+id/offOnn4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/icon_alarm_clock"
-                android:background="@null"
-                android:layout_below="@+id/btn3"
-                android:layout_alignStart="@+id/offOnn2"
-                android:layout_marginTop="11dp"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/other4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn4"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/time4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn4"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:textSize="24dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-
-            <Button
-                android:id="@+id/btn5"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:layout_below="@+id/btn4"
-                android:visibility="invisible"/>
-            <ImageButton
-                android:id="@+id/offOnn5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/icon_alarm_clock"
-                android:background="@null"
-                android:layout_below="@+id/btn4"
-                android:layout_alignStart="@+id/offOnn2"
-                android:layout_marginTop="11dp"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/other5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn5"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/time5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn5"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:textSize="24dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-
-            <Button
-                android:id="@+id/btn6"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:layout_below="@+id/btn5"
-                android:visibility="invisible"/>
-            <ImageButton
-                android:id="@+id/offOnn6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/icon_alarm_clock"
-                android:background="@null"
-                android:layout_below="@+id/btn5"
-                android:layout_alignStart="@+id/offOnn2"
-                android:layout_marginTop="11dp"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/other6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn6"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="5dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-            <TextView
-                android:id="@+id/time6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btn6"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:textSize="24dp"
-                android:text="Будильник"
-                android:visibility="invisible"/>
-        </RelativeLayout>
+                android:layout_height="454dp"
+                android:layout_weight="1">
+            </ListView>
+        </LinearLayout>
     </ScrollView>
-
-
 
     <ImageButton
         android:id="@+id/plusAlarmClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/icon_plus_alarm_clock"
-
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="17dp"
@@ -265,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:textSize="17dp"
+        android:textSize="15dp"
         android:text="Добавить будильник"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

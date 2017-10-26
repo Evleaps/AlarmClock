@@ -121,6 +121,8 @@ public class PersonalAccount extends AppCompatActivity {
                 user.setLastName(cursor.getString(lastNameColIndex));
                 user.setLogin(cursor.getString(loginColIndex));
                 user.setPassword(cursor.getString(passwordColIndex));
+
+
             } while (cursor.moveToNext());
         } else Log.d("LOG_TAG", "0 rows");
         cursor.close();

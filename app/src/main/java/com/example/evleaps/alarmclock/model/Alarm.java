@@ -8,19 +8,46 @@ import java.util.Calendar;
 
 public class Alarm {
 
-    private Calendar calendar;
     private String   time;
     private int      ID;
-
-
+    private int      IdUser;
+    private boolean  state;
+    private Calendar calendar;
 
     public Alarm() {
     }
 
-    public Alarm(Calendar calendar, String time, int ID) {
+    public Alarm(String time, int ID, int idUser, boolean state, Calendar calendar) {
         this.calendar = calendar;
         this.time = time;
         this.ID = ID;
+        this.IdUser = idUser;
+        this.state = state;
+    }
+
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public int getIdUser() {
+        return IdUser;
+    }
+
+    public void setIdUser(int idUser) {
+        IdUser = idUser;
     }
 
     public int getID() {
@@ -39,21 +66,14 @@ public class Alarm {
         this.time = time;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
-    }
-
 
     @Override
     public String toString() {
         return "Alarm{" +
-                "calendar=" + calendar +
-                ", time='" + time + '\'' +
+                "time='" + time + '\'' +
                 ", ID=" + ID +
+                ", IdUser=" + IdUser +
+                ", state=" + state +
                 '}';
     }
 }

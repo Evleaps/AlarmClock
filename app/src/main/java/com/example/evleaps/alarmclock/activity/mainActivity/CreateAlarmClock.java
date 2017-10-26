@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import com.example.evleaps.alarmclock.controller.AlarmReceiver;
 import com.example.evleaps.alarmclock.R;
 import com.example.evleaps.alarmclock.controller.LoadUnloadObj;
 import com.example.evleaps.alarmclock.model.Alarm;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CreateAlarmClock extends AppCompatActivity implements View.OnClickListener {
@@ -31,7 +34,8 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
     private int hour, minute;
     private Calendar calendar;
     private Intent intent;
-    private Alarm alarmClock = new Alarm();
+    private Alarm alarmClock;
+    public static ArrayList<Alarm> alarms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,16 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
 
+        alarmClock = new Alarm();
+        alarms = new LoadUnloadObj(this).unload();//восстановил текущее состояние списка
+        Log.d("TAG_LOG", "alarms SIZE = " + alarms.size());
+        String ss = "";
+        for (Alarm s : alarms) {
+            ss += s+"\n";
+        }
+        Log.d("TAG_LOG", "alarms contain: \n " + ss);
+
+        //обработчики
         alarm_on.setOnClickListener(this);
         alarm_off.setOnClickListener(this);
 
@@ -114,17 +128,22 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
         calendar.set(Calendar.MINUTE, minute);
 
         String time = refactorTime();
-        setToastText("Будильник поставлен на " + time);
-
         alarmClock.setCalendar(calendar);
         alarmClock.setTime(time);
-        alarmClock.setID(new LoadUnloadObj(this).searchId());
+        alarmClock.setState(true);
+        try {
+            alarmClock.setID(alarms.get(alarms.size()-1).getID()+1);//на 1 больше, чем ID посл эл-а
+        } catch (IndexOutOfBoundsException e) {
+            alarmClock.setID(1);
+            Log.d("LOG_ERROR", "Элементов нет, не найти ID/ присвоен id = 1");
+        }
 
-        if (alarmClock.getID() == 0)
-            setToastText("Ошибка, ID = 0");
-        new LoadUnloadObj(this).load(alarmClock);
+        alarms.add(alarmClock);
+        new LoadUnloadObj(this).load(alarms);
+        Toast.makeText(this, "Будильник поставлен на " + time, Toast.LENGTH_LONG);
 
 
+        //установим сигнализацию
         pendingIntent = PendingIntent.getBroadcast(CreateAlarmClock.this, alarmClock.getID() , intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
@@ -133,12 +152,9 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
         startActivity(intent);
         finish();
     }
-    //вылезает 3.5 секундное сообщение поверх экрана
-    private void setToastText(String stateAlarm) {
-        Toast toast = Toast.makeText(CreateAlarmClock.this, stateAlarm, Toast.LENGTH_LONG);
-        toast.show();
-    }
 
+
+    //добавляю нули, что-бы было не 5.20 утра, а 05.20 утра
     private String refactorTime() {
         String hour_string;
         String minute_string;
@@ -153,7 +169,6 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
                 minute_string = "0" + minute;
             } else minute_string = String.valueOf(minute);
         }
-
         return hour_string + ":" + minute_string;
     }
 }

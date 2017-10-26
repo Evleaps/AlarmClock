@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/checkbox1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:button="@null"
+        android:drawableRight="@drawable/checkbox_selector">
+    </CheckBox>
+    <TextView
+        android:id="@+id/other1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-5dp"
+        android:text="Будильник"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/time1"
+        android:layout_marginTop="11dp" />
+    <TextView
+        android:id="@+id/time1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15:00"
+        android:textSize="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_below="@+id/other1"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
