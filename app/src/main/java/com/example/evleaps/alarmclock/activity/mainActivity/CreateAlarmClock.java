@@ -19,6 +19,7 @@ import com.example.evleaps.alarmclock.activity.settings.Hashish;
 import com.example.evleaps.alarmclock.controller.AlarmReceiver;
 import com.example.evleaps.alarmclock.R;
 import com.example.evleaps.alarmclock.controller.LoadUnloadObj;
+import com.example.evleaps.alarmclock.controller.SetAlarmManager;
 import com.example.evleaps.alarmclock.model.Alarm;
 
 import java.util.ArrayList;
@@ -145,7 +146,7 @@ public class CreateAlarmClock extends AppCompatActivity implements View.OnClickL
 
         //установим сигнализацию
         pendingIntent = PendingIntent.getBroadcast(CreateAlarmClock.this, alarmClock.getID() , intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, new SetAlarmManager(alarmClock).returnCalendar().getTimeInMillis(), pendingIntent);
 
         //возвращаемся, при старте активити приложение восстановит данные из памяти
         Intent intent = new Intent(this, SelectClock.class);

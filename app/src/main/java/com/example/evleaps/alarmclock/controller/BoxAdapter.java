@@ -16,11 +16,14 @@ import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import com.example.evleaps.alarmclock.R;
 import com.example.evleaps.alarmclock.model.Alarm;
 
 /**
- * Created by RAymaletdin on 10/24/2017.
+ * Этот адаптер для чекбокса будильников, см {@link com.example.evleaps.alarmclock.activity.mainActivity.SelectClock}
  */
 
 public class BoxAdapter extends BaseAdapter {
@@ -83,19 +86,21 @@ public class BoxAdapter extends BaseAdapter {
             // меняем данные (on or off)
             Alarm alarm = getAlarm((Integer) buttonView.getTag());
             alarm.setState(isChecked);
+            new LoadUnloadObj(context).refresh(alarm);
+
          /**   т.к. при прокрутке будет пересоздаваться view нужно
              сейчас произвести логику откл\вкл сигнализации*/
             Intent intent = new Intent(context, AlarmReceiver.class);
             pIntent = PendingIntent.getBroadcast(context, alarm.getID(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
          if (isChecked == true) {
-             alarmManager.set(AlarmManager.RTC_WAKEUP, alarm.getCalendar().getTimeInMillis(), pIntent);
-             Log.d("LOG_TAG", "Будильник "+alarm.getID()+" установлен");
-             Toast.makeText(context, "Будильник установлен на " + alarm.getTime(), Toast.LENGTH_LONG);
+             new SetAlarmManager(alarm);//устанавливает
+             alarmManager.set(AlarmManager.RTC_WAKEUP,
+                     new SetAlarmManager(alarm).returnCalendar().getTimeInMillis(), pIntent);
+             Log.d("LOG_TAG", "Будильник " + alarm.getID() + " установлен");
          } else {
              alarmManager.cancel(pIntent);
-             Log.d("LOG_TAG", "Будильник "+alarm.getID()+" отменен");
-             
+             Log.d("LOG_TAG", "Будильник " + alarm.getID() + " отменен");
          }
         }
     };
@@ -105,3 +110,4 @@ public class BoxAdapter extends BaseAdapter {
         return ((Alarm) getItem(position));
     }
 }
+

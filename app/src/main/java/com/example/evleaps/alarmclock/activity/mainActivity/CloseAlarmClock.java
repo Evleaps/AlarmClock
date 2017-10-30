@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.example.evleaps.alarmclock.controller.AlarmReceiver;
 import com.example.evleaps.alarmclock.controller.Constant;
 import com.example.evleaps.alarmclock.R;
+import com.example.evleaps.alarmclock.model.Alarm;
 
 import java.util.Calendar;
 
@@ -37,7 +39,7 @@ public class CloseAlarmClock extends AppCompatActivity implements View.OnClickLi
 
         //запуск сигнала
         mediaPlayer = MediaPlayer.create(this, R.raw.boom_boom);
-       // mediaPlayer.start();
+        mediaPlayer.start();
 
         sleep   = (Button) findViewById(R.id.sleep_btn);
         close   = (Button) findViewById(R.id.close_btn);
@@ -56,13 +58,15 @@ public class CloseAlarmClock extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.close_btn:
-           //     mediaPlayer.stop();
+                mediaPlayer.stop();
+                Log.d("LOG_TAG", "Будильник выключен после пробуждения");
                 this.finish();
                 break;
             case R.id.sleep_btn:
-          //      mediaPlayer.stop();
+                mediaPlayer.stop();
                 pendingIntent = PendingIntent.getBroadcast(CloseAlarmClock.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + Constant.TIME_TO_SLEEP, pendingIntent);
+                Log.d("LOG_TAG", "Будильник приостановлен после пробуждения");
                 this.finish();
                 break;
             default:
